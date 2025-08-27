@@ -15,6 +15,7 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   base: '/', 
   site: 'https://csehrafin.github.io/',
+  outDir: "./dist",
   vite: {
     plugins: [tailwindcss()],
   },
