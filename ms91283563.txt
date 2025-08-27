@@ -1,5 +1,0 @@
-﻿{
-  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
-  "Domain": "csehrafin.github.io",
-  "Id": "ef074596-4462-41c7-8eaa-68f29849358a"
-}

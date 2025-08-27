@@ -1,0 +1,86 @@
+[
+  {
+    "title": "D'IDENTITÉ Client for Android",
+    "organization": "International Organization for Identity Documents",
+    "dates": "Jun 2025 - Present",
+    "description": "D'IDENTITÉ Client for Android is a cornerstone mobile application within the OIDI client ecosystem. Designed for enhanced security, privacy, and interoperability, the app enables users to securely store and manage digital passports, identification cards, and Laissez-Passer documents issued or authorized by OIDI, as well as national ePassports for general citizens. Built with a native Android architecture emphasizing hardware-backed key storage, local encrypted data management, and biometric authentication, D'IDENTITÉ empowers users to carry verifiable credentials securely on their devices without relying on cloud services or third-party platforms. The app supports secure digital signing of documents, seamless NFC eMRTD reading compliant with ICAO standards, and offline verification aligned with OIDI's international PKI and trust infrastructure. As part of OIDI’s larger digital identity ecosystem, D'IDENTITÉ Client for Android ensures trustworthy, user-centric control over personal identity data, fostering global interoperability and privacy-first identity verification for government authorities and citizens alike.",
+    "skills": [
+      "Secure Design for Government Identity Documents",
+      "Digital Travel and Identification Credentials",
+      "Identity and Access Management (IAM)"
+    ]
+  },
+  {
+    "title": "International Public Key Directory Service",
+    "organization": "International Organization for Identity Documents",
+    "dates": "Apr 2025 - Present",
+    "description": "A global directory service for managing and distributing public keys for secure identity document verification and issuance.",
+    "skills": [
+      "PKI",
+      "Public Key Cryptography",
+      "Government-grade Database"
+    ]
+  },
+  {
+    "title": "National Public Key Directory Service for Governments",
+    "organization": "International Organization for Identity Documents",
+    "dates": "Apr 2025 - Present",
+    "description": "A national-level public key directory service supporting government agencies in secure identity management and document verification.",
+    "skills": [
+      "PKI",
+      "Public Key Cryptography",
+      "Government-grade Database"
+    ]
+  },
+  {
+    "title": "Public Key Directory",
+    "organization": "International Organization for Identity Documents",
+    "dates": "Apr 2025 - Present",
+    "description": "Developing and maintaining a secure Public Key Directory to facilitate trusted access and verification of cryptographic keys for electronic document issuance. Ensuring seamless integration, high availability, and adherence to global security standards. Collaborating with teams to optimize performance and support scalable, reliable identity management solutions.",
+    "skills": []
+  },
+  {
+    "title": "Public Key Directory",
+    "organization": "The Computer Science Hall",
+    "dates": "Apr 2025 - Present",
+    "description": "Developing and maintaining a secure Public Key Directory to facilitate trusted access and verification of cryptographic keys for electronic document issuance. Ensuring seamless integration, high availability, and adherence to global security standards. Collaborating with teams to optimize performance and support scalable, reliable identity management solutions.",
+    "skills": []
+  },
+  {
+    "title": "Public Key Infrastructure for Document Issuance",
+    "organization": "The Computer Science Hall",
+    "dates": "Apr 2025 - Present",
+    "description": "Designing and maintaining a robust Public Key Infrastructure (PKI) system to secure electronic document issuance processes. Ensuring cryptographic integrity, authentication, and compliance with industry standards for identity documents.",
+    "skills": []
+  },
+  {
+    "title": "Electronic Machine Readable Travel Document Issuance Suite",
+    "organization": "International Organization for Identity Documents",
+    "dates": "Dec 2024 - Present",
+    "description": "",
+    "skills": []
+  },
+  {
+    "title": "Enterprise-Grade Secure Identity and Access Management System Using Auth0 and Cloudflare One WARP/Cloudflare Zero Trust Integration",
+    "organization": "The Computer Science Hall",
+    "dates": "Feb 2025 - Jun 2025",
+    "description": "",
+    "skills": [
+      "Cloudflare Zero Trust",
+      "Auth0",
+      "Authentication",
+      "Cloudflare One WARP"
+    ]
+  },
+  {
+    "title": "Specimen: Republic of Utopia Diplomatic Passport",
+    "organization": "International Organization for Identity Documents",
+    "dates": "Feb 2025 - Mar 2025",
+    "description": "A Specimen/Example Passport for the Republic of Utopia, a Specimen/Example Nation used in ICAO DOC 9303.",
+    "skills": [
+      "Electronic Machine Readable Travel Documents",
+      "Security Design",
+      "Secure Design for Government Identity Documents"
+    ]
+  }
+]

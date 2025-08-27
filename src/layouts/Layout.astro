@@ -1,0 +1,145 @@
+---
+// filepath: c:\Users\Rafin\Desktop\vsc\vsc.prtf\csehrafin\src\layouts\Layout.astro
+import "../styles/global.css";
+---
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Ishtiaque Ahmed Rafin | PKI Engineer & Cybersecurity Specialist</title>
+    <meta name="description" content="Designing resilient PKI frameworks, cryptographically verifiable digital identities, and global cybersecurity architectures for enterprises and governments." />
+    <meta name="keywords" content="PKI, Cybersecurity, Digital Identity, Cloud Infrastructure, Government Security, Enterprise Security" />
+    <meta name="author" content="Ishtiaque Ahmed Rafin" />
+    <meta property="og:title" content="Ishtiaque Ahmed Rafin | PKI Engineer & Cybersecurity Specialist" />
+    <!-- .. -->
+    <meta property="og:description" content="Designing resilient PKI frameworks, cryptographically verifiable digital identities, and global cybersecurity architectures for enterprises and governments." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://csehrafin.github.io" />
+    <meta property="og:site_name" content="Ishtiaque Ahmed Rafin" />
+    <!-- .. -->
+    <link rel="canonical" href="https://csehrafin.github.io" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <slot name="head" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-dark-navy/95">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <a href="/" class="flex items-center space-x-2 animate-fade-in z-50 min-w-0">
+            <span class="font-bold text-lg md:text-xl text-light-slate truncate">Ishtiaque Ahmed Rafin</span>
+          </a>
+          <button id="menu-btn" class="z-50 p-2 rounded-md hover:bg-navy-slate/50 transition-colors flex-shrink-0">
+            <svg id="menu-icon" class="w-8 h-8 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <svg id="close-icon" class="w-8 h-8 text-accent-cyan hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Full-Screen Menu Overlay -->
+    <div id="menu-overlay" class="fixed inset-0 bg-dark-navy/95 backdrop-blur-xl z-25 flex items-center justify-center p-4 sm:p-16 transition-opacity duration-300 ease-in-out opacity-0 pointer-events-none overflow-y-auto">
+      <ul class="space-y-6 sm:space-y-8 text-center w-full max-w-lg mx-auto">
+        <li class="menu-link opacity-0">
+          <a href="/resume" class="menu-closer text-4xl font-bold text-slate hover:text-accent-cyan transition-colors duration-200">Resume</a>
+        </li>
+        <li class="menu-link opacity-0">
+          <a href="/projects" class="menu-closer text-4xl font-bold text-slate hover:text-accent-cyan transition-colors duration-200">Projects</a>
+        </li>
+        <li class="menu-link opacity-0">
+          <a href="/certifications" class="menu-closer text-4xl font-bold text-slate hover:text-accent-cyan transition-colors duration-200">Certifications</a>
+        </li>
+        <li class="menu-link opacity-0">
+          <a href="/contact" class="menu-closer text-4xl font-bold text-slate hover:text-accent-cyan transition-colors duration-200">Contact</a>
+        </li>
+      </ul>
+    </div>
+
+
+
+
+    <slot />
+
+    <!-- Inline JS -->
+    <script is:inline>
+    function setMobileHeight() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    
+    window.addEventListener('resize', setMobileHeight);
+    window.addEventListener('orientationchange', setMobileHeight);
+    setMobileHeight();
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    // Calculate scrollbar width on load
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+
+    const menuBtn = document.getElementById('menu-btn');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+    const menuClosers = document.querySelectorAll('.menu-closer');
+    const menuLinks = document.querySelectorAll('.menu-link');
+
+    function toggleMenu() {
+      const isOpen = !menuOverlay.classList.contains('opacity-0');
+      
+      menuOverlay.classList.toggle('opacity-0');
+      menuOverlay.classList.toggle('pointer-events-none');
+      menuIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+      
+      // Replace overflow-hidden with menu-open class
+      document.body.classList.toggle('menu-open', !isOpen);
+
+      // Save scroll position when opening menu
+      if (!isOpen) {
+        document.body.style.top = `-${window.scrollY}px`;
+        menuLinks.forEach(link => {
+          link.classList.remove('show');
+          void link.offsetWidth;
+          link.classList.add('show');
+        });
+      } else {
+        // Restore scroll position when closing menu
+        const scrollY = document.body.style.top;
+        document.body.style.top = '';
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    }
+
+    menuBtn?.addEventListener('click', toggleMenu);
+    menuClosers.forEach(link => link.addEventListener('click', toggleMenu));
+  });
+
+
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Ishtiaque Ahmed Rafin",
+        "url": "https://csehrafin.github.io",
+        "sameAs": [
+          "https://linkedin.com/in/csehrafin",
+          "https://github.com/csehrafin",
+        ],
+        "jobTitle": "Secretary General and Chair of Governing Council",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "International Organization for Identity Documents"
+        }
+      }
+    </script>
+
+  </body>
+</html>
