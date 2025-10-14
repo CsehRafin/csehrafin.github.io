@@ -1,0 +1,35 @@
+---
+import Container from "@components/Container.astro";
+import Link from "@components/Link.astro";
+import { SITE } from "@consts";
+---
+
+<header>
+  <Container>
+    <div class="flex flex-wrap gap-y-2 text-xs md:text-lg justify-between">
+      <Link href="/" underline={false}>
+        <div class="font-semibold">
+          {SITE.NAME}
+        </div>
+      </Link>
+      <nav class="flex gap-x-6"> {/* Increased horizontal gap to gap-x-6 */}
+        <Link href="/publications" underline={false}>
+          publications
+        </Link>
+        <Link href="/work" underline={false}>
+          work
+        </Link>
+        <Link href="/projects" underline={false}>
+          projects
+        </Link>
+        <Link href="/certifications" underline={false}>
+          certifications
+        </Link>
+        {/* Add the new resume link here */}
+        <Link href="/resume.pdf" external={true} underline={false}>
+          resume
+        </Link>
+      </nav>
+    </div>
+  </Container>
+</header>

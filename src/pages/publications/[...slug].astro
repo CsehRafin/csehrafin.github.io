@@ -1,0 +1,126 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import { readingTime } from "@lib/utils";
+import BackToPrev from "@components/BackToPrev.astro";
+import { marked } from "marked";
+
+// --- Generate static paths from remote JSON ---
+export async function getStaticPaths() {
+  try {
+    const response = await fetch("https://publications.csehrafin.workers.dev/pub.json", {
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const publications = await response.json();
+
+    if (!Array.isArray(publications) || publications.length === 0) {
+      console.warn("No publications found, returning empty array");
+      return [];
+    }
+
+    return publications.map((pub) => ({
+      params: { slug: pub.slug },
+      props: { publication: pub },
+    }));
+  } catch (error) {
+    console.error("Failed to fetch publications:", error);
+    return [];
+  }
+}
+
+const { publication } = Astro.props;
+
+// --- Fetch markdown content ---
+const mdUrl = `https://publications.csehrafin.workers.dev/pub/${publication.slug}.md`;
+const mdResponse = await fetch(mdUrl);
+
+if (!mdResponse.ok) {
+  throw new Error(`Failed to fetch markdown for slug: ${publication.slug}`);
+}
+
+const markdown = await mdResponse.text();
+
+// --- Extract frontmatter ---
+const frontmatterMatch = markdown.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
+let frontmatter = {};
+let content = markdown;
+
+if (frontmatterMatch) {
+  const yamlText = frontmatterMatch[1];
+  
+  // Parse YAML frontmatter
+  frontmatter = Object.fromEntries(
+    yamlText
+      .split("\n")
+      .filter(line => line.trim() && line.includes(":"))
+      .map((line) => {
+        const [key, ...rest] = line.split(":");
+        return [key.trim(), rest.join(":").trim().replace(/^["']|["']$/g, "")];
+      })
+  );
+  
+  // Remove frontmatter from content
+  content = markdown.slice(frontmatterMatch[0].length).trim();
+}
+
+// --- Convert markdown to HTML ---
+const htmlContent = marked(content);
+
+// --- Calculate reading time ---
+const readTime = readingTime(content);
+
+// --- Use frontmatter or fallback to publication data ---
+const title = frontmatter.title || publication.title;
+const description = frontmatter.description || "";
+const dateString = frontmatter.date || publication.date;
+const date = new Date(dateString);
+const fileURL = publication["url-pub"]; // Note: JSON uses "url-pub"
+---
+
+<PageLayout title={title} description={description}>
+  <Container>
+    <div class="animate">
+      <BackToPrev href="/publications">
+        Back to publications
+      </BackToPrev>
+    </div>
+    <div class="space-y-1 my-10">
+      <div class="animate flex items-center gap-1.5">
+        <div class="font-base text-sm">
+          <FormattedDate date={date} />
+        </div>
+        &bull;
+        <div class="font-base text-sm">
+          {readTime}
+        </div>
+      </div>
+      <div class="animate text-2xl font-semibold text-black dark:text-white">
+        {title}
+      </div>
+
+      {fileURL && (
+        <nav class="animate mt-2">
+          <a 
+            href={fileURL} 
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block px-3 py-1.5 text-sm font-medium text-black/60 dark:text-white/60 border border-white/25 rounded-full backdrop-blur-sm dark:hover:bg-zinc-700/50 transition-colors duration-300"
+          >
+            View Publication (PDF)
+          </a>
+        </nav>
+      )}
+    </div>
+    <article class="animate prose dark:prose-invert">
+      <Fragment set:html={htmlContent} />
+    </article>
+  </Container>
+</PageLayout>

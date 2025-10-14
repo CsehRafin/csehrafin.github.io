@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import { dateRange } from "@lib/utils";
+import { WORK } from "@consts";
+
+const collection = (await getCollection("work"))
+// ... (the rest of your frontmatter sorting logic remains the same)
+  .sort((a, b) => {
+    if (a.data.main && !b.data.main) return -1;
+    if (!a.data.main && b.data.main) return 1;
+    return new Date(b.data.dateStart).valueOf() - new Date(a.data.dateStart).valueOf();
+  });
+
+const work = await Promise.all(
+  collection.map(async (item) => {
+    const { Content } = await item.render();
+    return { ...item, Content };
+  })
+);
+---
+
+<PageLayout title={WORK.TITLE} description={WORK.DESCRIPTION}>
+  <Container>
+    <div class="space-y-10">
+      <div class="animate font-semibold text-black dark:text-white">
+        Work
+      </div>
+      
+      {/* START: Updated list with dividers */}
+      <ul class="flex flex-col divide-y divide-black/15 dark:divide-white/20">
+        { 
+          work.map(entry => (
+            <li class="animate py-6 first:pt-0 last:pb-0">
+              <div class="text-sm opacity-75">
+                {dateRange(entry.data.dateStart, entry.data.dateEnd)}
+              </div>
+              <div class="font-semibold text-black dark:text-white mt-1">
+                {entry.data.company}
+              </div>
+              <div class="text-sm opacity-75">
+                {entry.data.role}
+              </div>
+              <article class="mt-4">
+                <entry.Content />
+              </article>
+            </li>
+          ))
+        }
+      </ul>
+      {/* END: Updated list with dividers */}
+
+    </div>
+  </Container
+</PageLayout>

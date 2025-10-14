@@ -1,0 +1,270 @@
+---
+import { getCollection } from "astro:content";
+import Container from "@components/Container.astro";
+import PageLayout from "@layouts/PageLayout.astro";
+import ArrowCard from "@components/indexArrowCard.astro";
+import Link from "@components/Link.astro";
+import { dateRange } from "@lib/utils";
+import { SITE, HOME, SOCIALS } from "@consts";
+import { formatDate } from "@lib/utils";
+
+// --- Fetch remote publications ---
+const pubResponse = await fetch("https://publications.csehrafin.workers.dev/pub.json");
+if (!pubResponse.ok) {
+  throw new Error("Failed to fetch remote publications");
+}
+const allPublications = await pubResponse.json();
+
+const publications = allPublications
+  .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
+  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE)
+  .map(pub => ({
+    slug: `publications/${pub.slug}`, // <-- add leading slash
+    data: {
+      title: pub.title,
+      date: new Date(pub.date),
+    }
+  }));
+
+// --- Fetch remote projects ---
+const projResponse = await fetch("https://projects.csehrafin.workers.dev/projects.json");
+if (!projResponse.ok) {
+  throw new Error("Failed to fetch remote projects");
+}
+const allProjects = await projResponse.json();
+
+const projects = allProjects
+  .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
+  .slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE)
+  .map(project => ({
+    slug: `projects/${project.slug}`, // <-- add leading slash
+    data: {
+      title: project.title,
+      date: new Date(project.date),
+    }
+  }));
+
+// --- Work experience (still local) ---
+const allWorkEntries = await getCollection("work");
+
+let mainWorkEntry = allWorkEntries.find(entry => entry.data.main);
+
+if (!mainWorkEntry && allWorkEntries.length > 0) {
+  mainWorkEntry = allWorkEntries.sort((a, b) => new Date(b.data.dateStart).valueOf() - new Date(a.data.dateStart).valueOf())[0];
+}
+
+const work = [];
+if (mainWorkEntry) {
+  const { Content } = await mainWorkEntry.render();
+  work.push({ ...mainWorkEntry, Content });
+}
+
+// --- Fetch remote certifications ---
+const certResponse = await fetch("https://credentials.csehrafin.workers.dev/certifications.json");
+if (!certResponse.ok) {
+  throw new Error("Failed to fetch certifications");
+}
+const remoteCerts = await certResponse.json();
+
+const certifications = remoteCerts
+  .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
+  .slice(0, SITE.NUM_CERTIFICATIONS_ON_HOMEPAGE);
+---
+
+<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+  <Container>
+    <h4 class="animate md:text-3xl text-2xl font-semibold text-black dark:text-white">
+     Hello, I'm {SITE.NAME}.
+    </h4>
+    <div class="space-y-16 text-[15px]">
+      <section>
+        <article class="space-y-4">
+<p class="animate">
+  I'm <strong>Ishtiaque Ahmed Rafin</strong>, a multidisciplinary technology researcher, engineer, and author at the intersection of digital identity, cybersecurity, and cloud infrastructure. As the <strong>General Secretary of the International Organization for Identity Documents (OIDI)</strong> and the <strong>author of its Charter</strong>, I lead the development of global frameworks for digital identity and electronic trust systems.
+</p>
+
+<p class="animate">
+  My work bridges deep engineering with international policy. I design <strong>public key infrastructure (PKI)</strong> and scalable, cryptographically-secure systems across <strong>OCI, Azure, GCP, AWS,</strong> and <strong>Kubernetes</strong>. I also author legal frameworks for identity management and data protection, ensuring compliance with standards like <strong>ICAO 9303, ISO 27001, GDPR,</strong> and the <strong>Swiss FADP</strong>.
+</p>
+
+<p class="animate">
+  I am passionate about leveraging emerging technologies like <strong>AI, machine learning, and quantum computing</strong> to build the next generation of secure identification, verification, and governance solutions for government and enterprise systems.
+</p>
+<section class="animate space-y-6 text-[15px]">
+  <h5 class="font-semibold text-black dark:text-white">Areas of Expertise</h5>
+  <div class="flex flex-wrap gap-2">
+    <!-- Cryptography & Security -->
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">PKI & Cryptography</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Network Defense</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Digital Forensics</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Incident Response</span>
+
+    <!-- Cloud, DevOps, and Architecture -->
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Cloud Infrastructure</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">OCI / Azure / AWS / GCP / IBM Cloud</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">DevSecOps</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Serverless Architecture</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Infrastructure Automation</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">CI/CD & SRE</span>
+
+    <!-- Digital Identity & Biometrics -->
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Digital Identity</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">eID / ePassport / eMRTD</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Secure Document Issuance</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Biometric Authentication</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Facial Recognition</span>
+
+    <!-- Emerging Tech -->
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">AI & Machine Learning</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Edge Intelligence</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Quantum Computing</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Qiskit Solutions</span>
+
+    <!-- Standards & Legal -->
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">ISO 27001:2022</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">ISO/IEC 7810 / 7816 / 14443</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">ISO/IEC 18013 / 24727</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">ICAO DOC 9303</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">FIPS 203–205</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">GDPR / Swiss FADP</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Intellectual Property Law</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Treaty & International Law</span>
+
+    <!-- Development & Systems -->
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Svelte / Astro / WebAssembly</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Full Stack Development</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Docker / Kubernetes</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Edge & Embedded Systems</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Government-Grade Databases</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Hardware Security</span>
+    <span class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full text-sm text-black dark:text-white opacity-90">Semiconductor Concepts</span>
+  </div>
+</section>
+
+        </article>
+      </section>
+
+      <section class="animate space-y-6">
+        <div class="flex flex-wrap gap-y-2 items-center justify-between">
+          <h5 class="font-semibold text-black dark:text-white">
+            Work Experience
+          </h5>
+          <Link href="/work">
+            See all work
+          </Link>
+        </div>
+        <ul class="flex flex-col space-y-4">
+          {work.map(entry => (
+            <li>
+              <div class="text-sm opacity-85 space-y-1">
+                {dateRange(entry.data.dateStart, entry.data.dateEnd)}
+              </div>
+              <div class="font-semibold text-black dark:text-white space-y-1">
+                {entry.data.company}
+              </div>
+              <div class="text-sm opacity-85 space-y-1">
+                {entry.data.role}
+              </div>
+              
+              <div class="relative">
+                <article class="max-h-24 overflow-hidden">
+                  <entry.Content />
+                </article>
+
+                <div class="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-stone-100 to-transparent dark:from-black">
+                  <a 
+                    href="/work" 
+                    class="absolute bottom-2 right-4 px-3 py-1 text-sm font-medium text-black/60 dark:text-white/60 bg-stone-50/50 dark:bg-zinc-800/50 border border-stone-300/50 dark:border-zinc-700/50 rounded-full backdrop-blur-sm hover:bg-stone-200/75 dark:hover:bg-zinc-700/75 transition-colors duration-300"
+                    aria-label={`Read more about the role at ${entry.data.company}`}
+                  >
+                    Read more
+                  </a>
+                </div>
+              </div>
+
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="animate space-y-6">
+        <div class="flex flex-wrap gap-y-2 items-center justify-between">
+          <h5 class="font-semibold text-black dark:text-white">
+            Recent projects
+          </h5>
+          <Link href="/projects">
+            See all projects
+          </Link>
+        </div>
+        <ul class="flex flex-col gap-4">
+          {projects.map(project => (
+            <li>
+              <ArrowCard entry={project} />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="animate space-y-6">
+        <div class="flex flex-wrap gap-y-2 items-center justify-between">
+          <h5 class="font-semibold text-black dark:text-white">
+            Recent Publications
+          </h5>
+          <Link href="/publications">
+            See all publications
+          </Link>
+        </div>
+        <ul class="flex flex-col gap-4">
+          {publications.map(post => (
+            <li>
+              <ArrowCard entry={post} />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="animate space-y-6">
+        <div class="flex flex-wrap gap-y-2 items-center justify-between">
+          <h5 class="font-semibold text-black dark:text-white">
+            Certifications
+          </h5>
+          <Link href="/certifications">
+            See all certifications
+          </Link>
+        </div>
+        <ul class="flex flex-col gap-4">
+          {certifications.map(cert => (
+            <li class="relative group flex flex-nowrap py-3 px-4 rounded-lg border border-black/15 dark:border-white/20">
+              <div class="flex flex-col flex-1 truncate">
+                <div class="font-semibold">{cert.name}</div>
+                <div class="text-xs italic">{cert.issuer} - {formatDate(new Date(cert.date))}</div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="animate space-y-4">
+        <h5 class="font-semibold text-black dark:text-white">
+          Let's Connect
+        </h5>
+
+        <ul class="flex flex-wrap gap-2">
+          {SOCIALS.map(SOCIAL => (
+            <li class="flex gap-x-2 text-nowrap">
+              <Link href={SOCIAL.HREF} external aria-label={`${SITE.NAME} on ${SOCIAL.NAME}`}>
+                {SOCIAL.NAME}
+              </Link>
+              {"/"}
+            </li>
+          ))}
+          <li class="line-clamp-1">
+            <Link href={`mailto:${SITE.EMAIL}`} aria-label={`Email ${SITE.NAME}`}>
+              {SITE.EMAIL}
+            </Link>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </Container>
+</PageLayout>
