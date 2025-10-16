@@ -4,7 +4,6 @@ export type Site = {
   NUM_POSTS_ON_HOMEPAGE: number;
   NUM_WORKS_ON_HOMEPAGE: number;
   NUM_PROJECTS_ON_HOMEPAGE: number;
-  NUM_CERTIFICATIONS_ON_HOMEPAGE: number;
 };
 
 export type Metadata = {
@@ -15,11 +14,4 @@ export type Metadata = {
 export type Socials = {
   NAME: string;
   HREF: string;
-}[];
-
-export type Certification = {
-  NAME: string;
-  ISSUER: string;
-  DATE: string;
-  URL?: string;
 }[];

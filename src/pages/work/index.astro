@@ -6,12 +6,7 @@ import { dateRange } from "@lib/utils";
 import { WORK } from "@consts";
 
 const collection = (await getCollection("work"))
-// ... (the rest of your frontmatter sorting logic remains the same)
-  .sort((a, b) => {
-    if (a.data.main && !b.data.main) return -1;
-    if (!a.data.main && b.data.main) return 1;
-    return new Date(b.data.dateStart).valueOf() - new Date(a.data.dateStart).valueOf();
-  });
+  .sort((a, b) => new Date(b.data.dateStart).valueOf() - new Date(a.data.dateStart).valueOf());
 
 const work = await Promise.all(
   collection.map(async (item) => {
@@ -27,30 +22,30 @@ const work = await Promise.all(
       <div class="animate font-semibold text-black dark:text-white">
         Work
       </div>
-      
-      {/* START: Updated list with dividers */}
-      <ul class="flex flex-col divide-y divide-black/15 dark:divide-white/20">
+      <ul class="flex flex-col space-y-4">
         { 
           work.map(entry => (
-            <li class="animate py-6 first:pt-0 last:pb-0">
+            <li class="animate">
               <div class="text-sm opacity-75">
                 {dateRange(entry.data.dateStart, entry.data.dateEnd)}
               </div>
-              <div class="font-semibold text-black dark:text-white mt-1">
+              <div class="font-semibold text-black dark:text-white">
                 {entry.data.company}
               </div>
               <div class="text-sm opacity-75">
                 {entry.data.role}
               </div>
-              <article class="mt-4">
+              <article>
                 <entry.Content />
               </article>
             </li>
           ))
         }
       </ul>
-      {/* END: Updated list with dividers */}
+<!-- 
+      <ul class="animate flex flex-col gap-4">
 
+      </ul> -->
     </div>
-  </Container
+  </Container>
 </PageLayout>

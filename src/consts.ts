@@ -3,20 +3,19 @@ import type { Site, Metadata, Socials } from "@types";
 export const SITE: Site = {
   NAME: "Ishtiaque Ahmed Rafin",
   EMAIL: "csehrafin@csehrafin.cloudns.nz",
-  NUM_POSTS_ON_HOMEPAGE: 4,
-  NUM_WORKS_ON_HOMEPAGE: 1,
-  NUM_PROJECTS_ON_HOMEPAGE: 10,
-  NUM_CERTIFICATIONS_ON_HOMEPAGE: 3,
+  NUM_POSTS_ON_HOMEPAGE: 3,
+  NUM_WORKS_ON_HOMEPAGE: 2,
+  NUM_PROJECTS_ON_HOMEPAGE: 3,
 };
 
 export const HOME: Metadata = {
-  TITLE: "",
-  DESCRIPTION: "Cybersecurity Specialist, PKI Engineer & Architect (eMRTDs, eIDs and ePassports), IT Consultant and a Researcher.",
+  TITLE: "Root",
+  DESCRIPTION: "Cybersecurity Specialist, ",
 };
 
 export const PUBLICATIONS: Metadata = {
   TITLE: "Publications",
-  DESCRIPTION: "All my research papers and publications.",
+  DESCRIPTION: "A collection of my publications and research work.",
 };
 
 export const WORK: Metadata = {
@@ -26,21 +25,22 @@ export const WORK: Metadata = {
 
 export const PROJECTS: Metadata = {
   TITLE: "Projects",
-  DESCRIPTION: "A collection of my projects, with links to repositories.",
+  DESCRIPTION: "A collection of my projects, with links to repositories and demos.",
 };
 
 export const CERTIFICATIONS: Metadata = {
   TITLE: "Certifications",
-  DESCRIPTION: "A collection of my professional certifications.",
+  DESCRIPTION: "A collection of my certifications.",
 };
+
 
 export const SOCIALS: Socials = [
   { 
-    NAME: "Github",
-    HREF: "https://github.com/CsehRafin"
+    NAME: "github",
+    HREF: "https://github.com/csehrafin"
   },
   { 
-    NAME: "Linkedin",
-    HREF: "https://www.linkedin.com/in/CsehRafin",
+    NAME: "linkedin",
+    HREF: "https://www.linkedin.com/in/csehrafin/",
   }
 ];

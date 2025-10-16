@@ -4,10 +4,8 @@ const publications = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    description: z.string(),
     date: z.coerce.date(),
-    draft: z.boolean().optional(),
-    fileURL: z.string().optional(),
+    URL: z.string().optional()
   }),
 });
 
@@ -18,7 +16,7 @@ const work = defineCollection({
     role: z.string(),
     dateStart: z.coerce.date(),
     dateEnd: z.union([z.coerce.date(), z.string()]),
-    main: z.boolean().optional(), // Add this line
+    main: z.boolean()
   }),
 });
 
@@ -26,12 +24,19 @@ const projects = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    description: z.string(),
     date: z.coerce.date(),
     draft: z.boolean().optional(),
-    demoURL: z.string().optional(),
     repoURL: z.string().optional()
   }),
 });
 
-export const collections = { publications, work, projects };
+const certifications = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    URL: z.string().optional()
+  }),
+});
+
+export const collections = { work, projects, publications, certifications };

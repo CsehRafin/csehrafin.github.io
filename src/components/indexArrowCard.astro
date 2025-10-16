@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import FormattedDate from "@components/FormattedDate.astro";
+import FormattedProj from "./FormattedProj.astro";
 type Props = {
   entry: CollectionEntry<"publications"> | CollectionEntry<"projects">;
 }
@@ -13,8 +13,8 @@ const { entry } = Astro.props;
     <div class="font-semibold">
       {entry.data.title}
     </div>
-    <div class="text-xs italic">
-      <FormattedDate date={entry.data.date} />
+    <div class="text-sm">
+      <FormattedProj date={entry.data.date} />
     </div>
   </div>
   <svg 

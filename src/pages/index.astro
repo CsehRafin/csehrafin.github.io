@@ -2,81 +2,22 @@
 import { getCollection } from "astro:content";
 import Container from "@components/Container.astro";
 import PageLayout from "@layouts/PageLayout.astro";
-import ArrowCard from "@components/indexArrowCard.astro";
+import ArrowCard from "@components/ArrowCard.astro";
 import Link from "@components/Link.astro";
 import { dateRange } from "@lib/utils";
 import { SITE, HOME, SOCIALS } from "@consts";
-import { formatDate } from "@lib/utils";
 
-// --- Fetch remote publications ---
-const pubResponse = await fetch("https://publications.csehrafin.workers.dev/pub.json");
-if (!pubResponse.ok) {
-  throw new Error("Failed to fetch remote publications");
-}
-const allPublications = await pubResponse.json();
 
-const publications = allPublications
-  .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
-  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE)
-  .map(pub => ({
-    slug: `publications/${pub.slug}`, // <-- add leading slash
-    data: {
-      title: pub.title,
-      date: new Date(pub.date),
-    }
-  }));
 
-// --- Fetch remote projects ---
-const projResponse = await fetch("https://projects.csehrafin.workers.dev/projects.json");
-if (!projResponse.ok) {
-  throw new Error("Failed to fetch remote projects");
-}
-const allProjects = await projResponse.json();
 
-const projects = allProjects
-  .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
-  .slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE)
-  .map(project => ({
-    slug: `projects/${project.slug}`, // <-- add leading slash
-    data: {
-      title: project.title,
-      date: new Date(project.date),
-    }
-  }));
-
-// --- Work experience (still local) ---
-const allWorkEntries = await getCollection("work");
-
-let mainWorkEntry = allWorkEntries.find(entry => entry.data.main);
-
-if (!mainWorkEntry && allWorkEntries.length > 0) {
-  mainWorkEntry = allWorkEntries.sort((a, b) => new Date(b.data.dateStart).valueOf() - new Date(a.data.dateStart).valueOf())[0];
-}
-
-const work = [];
-if (mainWorkEntry) {
-  const { Content } = await mainWorkEntry.render();
-  work.push({ ...mainWorkEntry, Content });
-}
-
-// --- Fetch remote certifications ---
-const certResponse = await fetch("https://credentials.csehrafin.workers.dev/certifications.json");
-if (!certResponse.ok) {
-  throw new Error("Failed to fetch certifications");
-}
-const remoteCerts = await certResponse.json();
-
-const certifications = remoteCerts
-  .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
-  .slice(0, SITE.NUM_CERTIFICATIONS_ON_HOMEPAGE);
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
   <Container>
-    <h4 class="animate md:text-3xl text-2xl font-semibold text-black dark:text-white">
-     Hello, I'm {SITE.NAME}.
+    <h4 class="animate font-semibold text-black md:text-3xl text-xl dark:text-white">
+      Hi, I'm {SITE.NAME}
     </h4>
-    <div class="space-y-16 text-[15px]">
+    <div class="space-y-16">
       <section>
         <article class="space-y-4">
 <p class="animate">
@@ -84,29 +25,31 @@ I'm a multidisciplinary technology researcher, engineer, and author at the inter
 </p>
 
 <p class="animate">
-I design, deploy, and maintain <strong>PKI</strong> and cryptographically-secure systems across <strong>OCI, Azure, GCP, AWS, IBM Cloud</strong>, and <strong>Kubernetes</strong>, while ensuring compliance with international technical and legal standards including <strong>ICAO DOC 9303, ISO 27001:2022, ISO/IEC 7810/7816/14443/18013/24727, FIPS 203–205, GDPR, Swiss FADP</strong>. My work bridges deep engineering with international policy and governance.
+I design, deploy, and maintain <strong>PKI</strong> and <strong>cryptographically-secure</strong> systems across <strong>OCI, Azure, GCP, IBM Cloud</strong>, and <strong>Kubernetes</strong>, while ensuring compliance with international technical and legal standards. My work bridges deep engineering with international policy and governance.
 </p>
 
 <p class="animate">
-I develop advanced <strong>identity and biometric systems</strong> such as <strong>eID, ePassports, eMRTDs, ABIS, and AFIS databases</strong>, along with high-security <strong>document issuance platforms</strong> and <strong>trust frameworks for directory services</strong>. I also explore <strong>AI, machine learning, quantum computing</strong>, and <strong>edge intelligence</strong> to enhance secure identification, verification, and government-grade infrastructure.
+I develop advanced <strong>identity and biometric systems</strong>, along with high-security <strong>document issuance platforms</strong> and <strong>trust frameworks for directory services</strong>. I also explore <strong>AI, machine learning, quantum computing</strong>, and <strong>edge intelligence</strong> to enhance secure identification, verification, and government-grade infrastructure.
 </p>
 
 <p class="animate">
 Current focus areas include <strong>multi-cloud identity management, federated authentication, secure PKI deployment in governmental and intergovernmental systems, citizen identity systems, and compliance with international security and technical standards</strong>. I work on crafting next-generation frameworks for digital trust, identity, and governance.
 </p>
-
-<section class="animate space-y-8">
+        </article>
+      </section>
+      <section class="animate space-y-8">
   <h5 class="font-semibold text-black dark:text-white text-xl">Skills and Expertise</h5>
 
   <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4">
     <h5 class="font-semibold text-black dark:text-white mb-2 sm:mb-0">Cryptography & Security</h5>
     <div class="flex flex-wrap gap-2">
-      <span class="px-3 py-1 border rounded-full text-sm">PKI & Cryptography</span>
+      <span class="px-3 py-1 border rounded-full text-sm">Public Key infrastructure</span>
       <span class="px-3 py-1 border rounded-full text-sm">Network Defense</span>
       <span class="px-3 py-1 border rounded-full text-sm">Digital Forensics</span>
       <span class="px-3 py-1 border rounded-full text-sm">Incident Response</span>
       <span class="px-3 py-1 border rounded-full text-sm">OT/ICS Security</span>
       <span class="px-3 py-1 border rounded-full text-sm">Threat Intelligence</span>
+      <span class="px-3 py-1 border rounded-full text-sm">Post-Quantum Cryptography</span>
       <span class="px-3 py-1 border rounded-full text-sm">Vulnerability Assessment & Remediation</span>
     </div>
   </div>
@@ -114,8 +57,7 @@ Current focus areas include <strong>multi-cloud identity management, federated a
   <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4">
     <h6 class="font-semibold text-black dark:text-white mb-2 sm:mb-0">Cloud & DevOps</h6>
     <div class="flex flex-wrap gap-2">
-      <span class="px-3 py-1 border rounded-full text-sm">Cloud Infrastructure</span>
-      <span class="px-3 py-1 border rounded-full text-sm">OCI / Azure / GCP / AWS / IBM Cloud</span>
+      <span class="px-3 py-1 border rounded-full text-sm">OCI / Azure / GCP / IBM Cloud</span>
       <span class="px-3 py-1 border rounded-full text-sm">DevSecOps & CI/CD</span>
       <span class="px-3 py-1 border rounded-full text-sm">Serverless & Multicloud Architecture</span>
       <span class="px-3 py-1 border rounded-full text-sm">Infrastructure Automation & SRE</span>
@@ -125,7 +67,6 @@ Current focus areas include <strong>multi-cloud identity management, federated a
   <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4">
     <h6 class="font-semibold text-black dark:text-white mb-2 sm:mb-0">Digital Identity & Biometric Systems</h6>
     <div class="flex flex-wrap gap-2">
-      <span class="px-3 py-1 border rounded-full text-sm">Digital Identity</span>
       <span class="px-3 py-1 border rounded-full text-sm">eID / ePassport / eMRTD</span>
       <span class="px-3 py-1 border rounded-full text-sm">Secure Document Issuance Platforms</span>
       <span class="px-3 py-1 border rounded-full text-sm">ABIS / AFIS Databases</span>
@@ -138,9 +79,11 @@ Current focus areas include <strong>multi-cloud identity management, federated a
     <h6 class="font-semibold text-black dark:text-white mb-2 sm:mb-0">AI, ML & Quantum</h6>
     <div class="flex flex-wrap gap-2">
       <span class="px-3 py-1 border rounded-full text-sm">AI & Machine Learning</span>
-      <span class="px-3 py-1 border rounded-full text-sm">Edge Intelligence</span>
+      <span class="px-3 py-1 border rounded-full text-sm">AI @ Edge</span>
       <span class="px-3 py-1 border rounded-full text-sm">Quantum Computing & IBM Qiskit</span>
       <span class="px-3 py-1 border rounded-full text-sm">AI Vector Search</span>
+      <span class="px-3 py-1 border rounded-full text-sm">Data Science</span>
+      <span class="px-3 py-1 border rounded-full text-sm">Embedded ML</span>
     </div>
   </div>
 
@@ -160,121 +103,16 @@ Current focus areas include <strong>multi-cloud identity management, federated a
   <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4">
     <h6 class="font-semibold text-black dark:text-white mb-2 sm:mb-0">Development & Systems</h6>
     <div class="flex flex-wrap gap-2">
-      <span class="px-3 py-1 border rounded-full text-sm">Svelte / Astro / WebAssembly</span>
       <span class="px-3 py-1 border rounded-full text-sm">Full Stack Development</span>
-      <span class="px-3 py-1 border rounded-full text-sm">Docker / Kubernetes / Embedded Systems</span>
+      <span class="px-3 py-1 border rounded-full text-sm">Embedded Systems</span>
       <span class="px-3 py-1 border rounded-full text-sm">Government-Grade Databases & Hardware Security</span>
     </div>
   </div>
 </section>
 
 
-
-        </article>
-      </section>
-
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white text-xl">
-            Work Experience
-          </h5>
-          <Link href="/work">
-            See all work
-          </Link>
-        </div>
-        <ul class="flex flex-col space-y-4">
-          {work.map(entry => (
-            <li>
-              <div class="text-sm opacity-85 space-y-1">
-                {dateRange(entry.data.dateStart, entry.data.dateEnd)}
-              </div>
-              <div class="font-semibold text-black dark:text-white space-y-1">
-                {entry.data.company}
-              </div>
-              <div class="text-sm opacity-85 space-y-1">
-                {entry.data.role}
-              </div>
-              
-              <div class="relative">
-                <article class="max-h-24 overflow-hidden">
-                  <entry.Content />
-                </article>
-
-                <div class="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-stone-100 to-transparent dark:from-black">
-                  <a 
-                    href="/work" 
-                    class="absolute bottom-2 right-4 px-3 py-1 text-sm font-medium text-black/60 dark:text-white/60 bg-stone-50/50 dark:bg-zinc-800/50 border border-stone-300/50 dark:border-zinc-700/50 rounded-full backdrop-blur-sm hover:bg-stone-200/75 dark:hover:bg-zinc-700/75 transition-colors duration-300"
-                    aria-label={`Read more about the role at ${entry.data.company}`}
-                  >
-                    Read more
-                  </a>
-                </div>
-              </div>
-
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white text-xl">
-            Recent projects
-          </h5>
-          <Link href="/projects">
-            See all projects
-          </Link>
-        </div>
-        <ul class="flex flex-col gap-4">
-          {projects.map(project => (
-            <li>
-              <ArrowCard entry={project} />
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white text-xl">
-            Recent Publications
-          </h5>
-          <Link href="/publications">
-            See all publications
-          </Link>
-        </div>
-        <ul class="flex flex-col gap-4">
-          {publications.map(post => (
-            <li>
-              <ArrowCard entry={post} />
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white text-xl">
-            Certifications
-          </h5>
-          <Link href="/certifications">
-            See all certifications
-          </Link>
-        </div>
-        <ul class="flex flex-col gap-4">
-          {certifications.map(cert => (
-            <li class="relative group flex flex-nowrap py-3 px-4 rounded-lg border border-black/15 dark:border-white/20">
-              <div class="flex flex-col flex-1 truncate">
-                <div class="font-semibold">{cert.name}</div>
-                <div class="text-xs italic">{cert.issuer} - {formatDate(new Date(cert.date))}</div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <section class="animate space-y-4">
-        <h5 class="font-semibold text-black dark:text-white text-xl">
+        <h5 class="font-semibold text-black dark:text-white">
           Let's Connect
         </h5>
 
