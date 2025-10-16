@@ -10,7 +10,7 @@ export const SITE: Site = {
 
 export const HOME: Metadata = {
   TITLE: "Root",
-  DESCRIPTION: "Cybersecurity Specialist, ",
+  DESCRIPTION: "Cybersecurity Specialist, PKI Engineer & Architect (ePassports, eID, eMRTDs), and a Researcher",
 };
 
 export const PUBLICATIONS: Metadata = {
